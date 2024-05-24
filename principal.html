@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+                    table, td, th{
+                        border: 1px solid black;
+                    }
+                    th{
+                        background-color: red;
+                        color: white;
+                    }
+                    tr:nth-child(even){background-color: pink;}
+                    tr:nth-child(odd){background-color: magenta;}
+                    h2{
+                        color: magenta;
+                    }
+        </style>
+    </head>
+    <body>
+        <h2>Ciclos formativos del IES Gregorio Prieto</h2>
+        <p>Página web: <a href="https://somosdelprieto.com" target="_blank">https://somosdelprieto.com </a>  </p>
+        <table id="tabla">
+            <thead id="cabeza">
+                <th>Nombre del ciclo</th>
+                <th>Grado</th>
+                <th>Año del titulo</th>
+            </thead>
+            <tbody id="cuerpo">
+
+            </tbody>
+        </table>
+
+        <script>
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                myFunction(this);
+                }
+            };
+            xhttp.open("GET", "ciclos.xml", true);
+            xhttp.send();
+
+            function myFunction(xml) {
+                var xmlDoc = xml.responseXML;
+                var x = xmlDoc.getElementsByTagName("ciclos")[0].childNodes[0];
+                var cuerpo= document.getElementById('cuerpo');
+
+                var txt = x.nodeValue;                
+                for(let i = 0; i < x.length; i++) {
+                let nombre = xmlDoc.getElementsByTagName("nombre")[i].childNodes[0].nodeValue;
+                let grado =  xmlDoc.getElementsByTagName("grado")[i].childNodes[0].nodeValue;
+                let anio=xmlDoc.getElementsByTagName("decretoTitulo")[i].getAttribute('anio');
+                cuerpo.innerHTML += `<tr><td>${nombre}</td><td>${grado}</td><td>${anio}</td></tr>`;
+            }
+            }
+        </script>
+    </body>
+</html>
